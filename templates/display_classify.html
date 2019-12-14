@@ -1,0 +1,104 @@
+<html>
+<head>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+
+		google.charts.load("current", {packages:["corechart"]});
+		google.charts.setOnLoadCallback(drawChart);
+		function drawChart() {
+			var data = google.visualization.arrayToDataTable([
+				['Genre', ''],
+				{% for i in score %}
+				[ '{{ i[0] }}'  , {{ i[2] }} ],
+				{% endfor %}
+				]);
+
+			var view = new google.visualization.DataView(data);
+			view.setColumns([0, 1,
+				{ calc: "stringify",
+				sourceColumn: 1,
+				type: "string",
+				role: "annotation" }]);
+
+			var options = {
+				title: "Movie Classification",
+				width: 1200,
+				hAxis: {
+					title: 'Occurences',
+					minValue: 0
+				},
+				vAxis: {
+					title: 'Genres'
+				},
+				bar: {groupWidth: "90%"},
+				bars: 'vertical', // Required for Material Bar Charts.
+				axes: {
+					x: {
+						0: { side: 'top', label: 'Percentage'} // Top x-axis.
+					},
+				},
+				legend: { position: "none" },
+			};
+			var chart = new google.visualization.BarChart(document.getElementById("bar_chart"));
+			chart.draw(view, options);
+		}
+	</script>
+
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Genre', ''],
+				{% for i in result %}
+				[ '{{ i[0] }}'  , {{ i[1] }} ],
+				{% endfor %}
+				]);
+
+        var options = {
+          title: 'Age vs. Weight comparison',
+          hAxis: {title: 'Age', minValue: 0, maxValue: 15},
+          vAxis: {title: 'Weight', minValue: 0, maxValue: 15},
+          legend: 'none'
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+<body>
+	<h1> Movie Classifier </h1>
+	<div id="bar_chart" style="width: 900px; height: 500px;"></div>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>
+
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Movie Classify</title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#{%for i in result%}#}
+{#            <div style="width:80%; margin-left: 10%;#}
+{#  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);#}
+{#  text-align: center;">#}
+{#                <ul type="none" class="list-group">#}
+{#                    <li class="highlight list-group-item list-group-item-action list-group-item-danger"><b>Genre:</b> {{i[0]}}</li>#}
+{#                    <li class="highlight list-group-item list-group-item-action list-group-item-secondary"><b>Score:</b> {{i[1]}}</li>#}
+{#                    <li class="highlight list-group-item list-group-item-action list-group-item-success"><b>Tf-idf Score:</b> {{i[2]}}</li>#}
+{#                <br>#}
+{#                <br>#}
+{##}
+{##}
+{#                </ul>#}
+{#            </div>#}
+{#                {% endfor%}#}
+{##}
+{#</body>#}
+{#</html>#}

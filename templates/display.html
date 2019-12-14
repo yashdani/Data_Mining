@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <div style="background-color: #f4f4f4;">
+        <!--<img src="https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwj1y76ahJrlAhVFmK0KHdIgAooQjRx6BAgBEAQ&url=%2Furl%3Fsa%3Di%26source%3Dimages%26cd%3D%26ved%3D%26url%3Dhttps%253A%252F%252Fwww.xplace.com%252Fu%252Fyanivtzadick%26psig%3DAOvVaw2rb0pGpKKKrFbwIMHmQWXh%26ust%3D1571083451894518&psig=AOvVaw2rb0pGpKKKrFbwIMHmQWXh&ust=1571083451894518" alt="image">-->
+
+
+        <h1 style="font-family: 'Montserrat', sans-serif; text-shadow: 2px 2px 5px red; left-margin: 30%"><b>Search Results</b> <br><small style="margin-left: 7%" class="text-muted">Using Tf-Idf</small></h1><br>
+{#            <table border="1">#}
+{#                <tr>#}
+{#                  <th>Title</th>#}
+{#                  <th>Plot</th>#}
+{#                  <th>TF/IDF</th>#}
+{#                  <th>Poster</th>#}
+{##}
+{#                </tr>#}
+                {%for i in result%}
+            <div style="width:80%; margin-left: 10%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;">
+{#                <td>#}
+{#                    <td><b>Title:</b> {{i[0]}}</td>#}
+{#                    <td><b>Title:</b> {{i[1]}}</td>#}
+{#                    <td><b>Title:</b> {{i[6]}}</td>#}
+{#                    {%for j in i[3]%}#}
+{#                        <b>Idf Score of {{ j }}:</b> {{i[3][j]}}</td>#}
+
+                <ul type="none" class="list-group">
+                    <li class="highlight list-group-item list-group-item-action list-group-item-danger"><b>Title:</b> {{i[0]}}</li>
+                    <li class="highlight list-group-item list-group-item-action list-group-item-secondary"><b>Overview:</b> {{i[1]}}</li>
+                    <li class="highlight list-group-item list-group-item-action list-group-item-info"><b>Release Date:</b> {{i[6]}}</li>
+                    {%for j in i[3]%}
+                    <li class="highlight list-group-item list-group-item-action list-group-item-warning"><b>Idf Score of {{ j }}:</b> {{i[3][j]}}</li>
+                    <li class="highlight list-group-item list-group-item-action list-group-item-info"><b>TF Score of {{ j }}:</b> {{i[4][j]}}</li>
+                    <li class="highlight list-group-item list-group-item-action list-group-item-success"><b>TF-IDF Score of {{ j }}:</b> {{i[5][j]}}</li>
+                    {% endfor%}
+                    <li class="highlight list-group-item list-group-item-action list-group-item-success"><b>Total Tf-idf Score:</b> {{i[2]}}</li>
+                <br>
+                <br>
+
+
+                </ul>
+            </div>
+                {% endfor%}
+              </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/7.0.0/mark.min.js"></script>
+	<script type="text/javascript">
+			var tokens = {{ highlight_q | safe }} ;
+			x = document.querySelectorAll(".highlight");
+			for (i = 0; i < x.length; i++) {
+				var instance = new Mark(x[i]);
+				instance.mark(tokens, {
+					accuracy: {
+						value: "exactly",
+						limiters: [".", ",", "!", ""]
+					}
+				});
+			}
+	</script>
+
+    </body>
+
+</html>
