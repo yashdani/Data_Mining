@@ -1,3 +1,4 @@
+"""@author: Yash Dani Student Id: 1001707349"""
 from img_cap import img_cap
 
 def get_results(query):
