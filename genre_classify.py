@@ -1,3 +1,6 @@
+# Yash Dani
+# 1001707349
+
 import pandas as pd
 import os, pickle, ast, operator
 from nltk.tokenize import RegexpTokenizer
@@ -30,8 +33,6 @@ def eval_result(query):
                 score = score * post_probability[(genre, token)]
         genre_score[genre] = score
     sorted_score_map = sorted(genre_score.items(), key=operator.itemgetter(1), reverse=True)
-    # sorted_score_map = sorted_score_map*10000000
-    # print(sorted_score_map)
     for i in sorted_score_map:
         sum += i[1]
     for i in range(len(sorted_score_map)):
@@ -54,7 +55,6 @@ def build_and_save():
             # Paramter is None for tagline and overview columns, so appending data in keywords[]
             if parameters is None:
                 keywords.append(col_values if isinstance(col_values, str) else "")
-            # Else it is genres as it has a parameter "Name". So append in genres[]
             else:
                 col_values = ast.literal_eval(col_values if isinstance(col_values, str) else '[]')
                 for col_value in col_values:
@@ -98,6 +98,7 @@ def save(prior_probability, post_probability):
 
 def initialize():
     global meta_data, meta_cols, tokenizer, stopword, stemmer, meta_data, test_data
+    # data Fetch
     # data_folder = 'data/'
     meta_cols = {"genres":['name'], "overview":None, "tagline":None}
     meta_data = pd.read_csv('movies_metadata.csv', usecols=meta_cols.keys())
