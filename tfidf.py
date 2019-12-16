@@ -17,7 +17,7 @@ class tfidf:
         # Pre-processing
         self.tokenizer = RegexpTokenizer(r'[a-zA-Z0-9]+')
         self.stopword = stopwords.words('english')
-        self.stemmer = PorterStemmer()
+        self.stemmer = SnowballStemmer()
         self.lemmatizer = WordNetLemmatizer()
         
         self.inverted_index = {}
@@ -27,21 +27,16 @@ class tfidf:
             self.inverted_index = pickle.load(open('invertedIndexPickle.pkl', 'rb'))
             self.document_vector = pickle.load(open('documentVectorPickle.pkl', 'rb'))
         else:
-            print("In else of get_scores:")
             self.build()
             self.save()
     
     def build(self):
-        print("Creating inverted index for meta data...")
         self.create_inverted_index()
-        print("Building document vector")
         self.build_doc_vector()
-        print("Built inverted index and document vector")
 
     def save(self):
         pickle.dump(self.inverted_index, open('invertedIndexPickle.pkl', 'wb+'))
         pickle.dump(self.document_vector, open('documentVectorPickle.pkl', 'wb+'))
-        print("Saved both")
 
     def create_inverted_index(self):
         for row in self.meta_data.itertuples():
@@ -138,14 +133,7 @@ class tfidf:
         FinalScore = {}
         IdfScore = {}
         TfScore = {}
-        TermIdf = {}
-        idf_term_new = {}
-        TermTf = {}
-        tf_term_new = {}
-        score_tf_idf_term = {}
-        tf_idf_term_new = {}
         for doc in relevant_docs:
-            score_final = 0
             score_idf = 0
             score_tf = 0
             score_tf_idf = 0
@@ -163,28 +151,12 @@ class tfidf:
 
                 final_score_tf_idf_term = list(zip(score_tf_idf_term_keys, score_tf_idf_term_values))
 
-            for token in query_vector:
-                score_idf = idf_vector[token] * (self.document_vector[doc][token] if token in self.document_vector[doc] else 0)
-                TermIdf[token] = score_idf
-                TermIdf_keys = list(TermIdf.keys())
-                TermIdf_values = list(TermIdf.values())
-
-                final_TermIdf = list(zip(TermIdf_keys, TermIdf_values))
-
-            for token in tf_vector:
-                score_tf = tf_vector[token] * (self.document_vector[doc][token] if token in self.document_vector[doc] else 0)
-                TermTf[token] = score_tf
-                TermTf_keys = list(TermTf.keys())
-                TermTf_values = list(TermTf.values())
-
                 final_TermTf = list(zip(TermTf_keys, TermTf_values))
 
             FinalScore[doc] = score_final
             IdfScore[doc] = score_idf
             TfScore[doc] = score_tf
-
-            idf_term_new[doc] = final_TermIdf
-            tf_term_new[doc] = final_TermTf
+            
             tf_idf_term_new[doc] = final_score_tf_idf_term
         sorted_FinalScore = sorted(FinalScore.items(), key=operator.itemgetter(1), reverse=True)
 
