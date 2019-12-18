@@ -31,8 +31,11 @@ https://yashdani.school.blog/
 
 
 Example for Text Search:-
+
 **"Bad Man"**
+
 **Result:-**
+
 Title: The 50 Worst Movies Ever Made
 Overview: There are some movies that are so bad they're good. And there are some movies that are so bad- that they're just bad...
 Release Date: 2004-07-13
